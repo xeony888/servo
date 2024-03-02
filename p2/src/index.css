@@ -1,0 +1,17 @@
+.parent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.row {
+  display: row;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+html {
+  color: white;
+  background-color: darkblue;
+}

@@ -1,0 +1,150 @@
+{
+    "version": "0.1.0",
+    "name": "p2p_contract_solana",
+    "instructions": [
+      {
+        "name": "createRoom",
+        "accounts": [
+          {
+            "name": "room",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "user",
+            "isMut": true,
+            "isSigner": true
+          },
+          {
+            "name": "systemProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": []
+      },
+      {
+        "name": "joinRoom",
+        "accounts": [
+          {
+            "name": "room",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "player2",
+            "isMut": false,
+            "isSigner": true
+          }
+        ],
+        "args": []
+      }
+    ],
+    "accounts": [
+      {
+        "name": "Room",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "player1",
+              "type": "publicKey"
+            },
+            {
+              "name": "player2",
+              "type": "publicKey"
+            },
+            {
+              "name": "timestamp",
+              "type": "i64"
+            },
+            {
+              "name": "dispute",
+              "type": {
+                "defined": "Dispute"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Dispute",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "opener",
+              "type": "publicKey"
+            },
+            {
+              "name": "disputed",
+              "type": {
+                "defined": "Block"
+              }
+            },
+            {
+              "name": "last1",
+              "type": {
+                "defined": "Block"
+              }
+            },
+            {
+              "name": "last2",
+              "type": {
+                "defined": "Block"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Block",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "data",
+              "type": "string"
+            },
+            {
+              "name": "num",
+              "type": "u64"
+            },
+            {
+              "name": "operations",
+              "type": {
+                "vec": "u64"
+              }
+            },
+            {
+              "name": "timestamp",
+              "type": "i64"
+            },
+            {
+              "name": "sig1",
+              "type": "bytes"
+            },
+            {
+              "name": "sig2",
+              "type": "bytes"
+            }
+          ]
+        }
+      }
+    ],
+    "errors": [
+      {
+        "code": 6000,
+        "name": "UninitializedRoom",
+        "msg": "Uninitialized Room"
+      },
+      {
+        "code": 6001,
+        "name": "RoomAlreadyInitialized",
+        "msg": "Room already initialized with two players"
+      }
+    ],
+    "metadata": {
+      "address": "Ao37gdr2XVcJMnYajGXExYCJPTbXxwVobmcqtstJLgbE"
+    }
+  }
