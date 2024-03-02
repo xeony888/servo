@@ -36,8 +36,8 @@ export default class Player {
         this.maxX = maxX;
         this.maxY = maxY;
         this.mass = 10000;
-        this.x = canvas.width / 2;
-        this.y = canvas.height / 2;
+        this.x = canvas.width / 2 + Math.random() * 100;
+        this.y = canvas.height / 2 + Math.random() * 100;
         this.vy = 0;
         this.vx = 0;
         this.deltaX = 0;
@@ -109,8 +109,8 @@ export default class Player {
                         collideable.takeDamage(bullet);
                     });
                 }
-                let adjX = (this.canvas.width / 2) + (bullet.x - this.x);
-                let adjY = (this.canvas.height / 2) + (bullet.y - this.y);
+                let adjX = (this.canvas.width / 2) + relx + (bullet.x - this.x);
+                let adjY = (this.canvas.height / 2) + rely + (bullet.y - this.y);
                 bullet.draw(adjX, adjY);
             }
             count++;

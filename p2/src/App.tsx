@@ -35,6 +35,7 @@ export default function App() {
   const localPeer = useRef<RTCPeerConnection>();
   const [remotePeerId, setRemotePeerId] = useState('');
   useEffect(() => {
+    if (socket) return;
     socket = io(process.env.REACT_APP_BACKEND_URL!);
     socket.on('connect', () => {
       setLocalPeerId(socket.id!);
@@ -96,12 +97,14 @@ export default function App() {
       if (!localPeer.current) return;
       await localPeer.current.addIceCandidate(new RTCIceCandidate(candidate));
     });
-
+    socket.on("player", (s) => {
+      setRemotePeerId(s);
+    })
     return () => {
-      socket.off('connect');
-      socket.off('offer');
-      socket.off('answer');
-      socket.off('candidate');
+      // socket.off('connect');
+      // socket.off('offer');
+      // socket.off('answer');
+      // socket.off('candidate');
     };
   }, []);
   const serializeSignAndSend = async (prevBlock?: Block) => {
@@ -216,11 +219,19 @@ const gameFrame = () => {
     // player.draw(canvas.width / 2, canvas.height / 2, gameObjectList);
     //console.log("Game frame");
 };
+const findOpponent = () => {
+  socket.emit("otherPlayer");
+}
   return (
     <div className="parent">
       {/* <u>super smash cousins</u> */}
       <p>Space Duel</p>
       <div>Your ID: {localPeerId}</div>
+      <p>Note: You will not be able to play on ethdenver wifi. The security settings block p2p connections {`:(`}</p>
+      <p>Check out the youtube video for an example: {`https://youtu.be/5KiAAnILpb4`}</p>
+      <p>In reality, an app like this should be ran outside a browser environment to allow for the best routes to be found</p>
+      <p>It should work on your home wifi network!</p>
+      <p>Just have your friend join the server, click the Find Opponent button, compare their id to the id of the player you want to play, and then press the call button twice - once to open the call, once to open the data channel</p>
       <div className="row" style={{gap: "10px"}}>
         <input
           type="text"
@@ -229,7 +240,7 @@ const gameFrame = () => {
           onChange={(e) => setRemotePeerId(e.target.value)}
         />
         <button onClick={callPeer}>Call Peer</button>
-        <button onClick={sendJson}>Send JSON to Peer</button>
+        <button onClick={findOpponent}>Find Opponent</button>
       </div>
       <div>
         <div className="flex flex-col items-center">

@@ -21,8 +21,30 @@ contract Validator is Ownable {
         Block last1;
         Block last2;
     }
+    struct Player {
+        uint x;
+        uint y;
+        uint health;
+        uint angle;
+    }
+    struct Asteroid {
+        uint x; 
+        uint y;
+    }
+    struct Bullet {
+        uint x;
+        uint y;
+        uint angle;
+    }
+    struct Data {
+        Player me;
+        Player other;
+        Asteroid[] asteroids;
+        Bullet[] myBullets;
+        Bullet[] enemyBullets;
+    }
     struct Block {
-        string data;
+        Data data;
         uint num;
         uint[] operations; // operations done on previous block to get here
         uint timestamp;
@@ -103,6 +125,12 @@ contract Validator is Ownable {
         // check whether performing the operations is possible
         // check whether performing the operations results in after
         // this validation function would validate the blocks
+        // writing this function makes the contract too expensive to deploy - i couldn't get enough testet eth
+        for (uint i = 0; i < _after.operations.length; i++) {
+                // do stuff here. this stuff is computationally expensive and must be put in a different contract
+                //if (_after.operations[i] == 1) ... do op 1
+                // ..... do op 2, op 3, etc
+        }
         return true;
     }
     function verifySignature(bytes32 h, bytes memory signature, address signerAddress) public pure returns(bool) {
